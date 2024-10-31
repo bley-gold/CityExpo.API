@@ -1,29 +1,39 @@
-const CustomerService = require('../service/customerService');
-const bcrypt = require('bcryptjs');
+const CustomerService = require('../service/customerService'); // Adjust the path as necessary
 
+// Controller for creating a customer
 const createCustomer = (req, res) => {
-    const customerData = req.body;
-    CustomerService.createCustomer(customerData, (err, result) => {
-        if (err) return res.status(500).send({ error: err.message });
-        res.status(201).send(result);
-    });
-};
-
-const getCustomerById = (req, res) => {
-    const customer_id = req.params.customer_id;
-    const password = req.body.password;
-
-    CustomerService.getCustomerById(customer_id, (err, customer) => {
-        if (err) return res.status(500).send({ error: err.message });
-        if (customer) {
-            bcrypt.compare(password, customer.password, (err, result) => {
-                if (err) return res.status(500).send({ error: 'Password comparison error' });
-                res.status(result ? 200 : 401).send(result ? customer : { error: 'Authentication failed' });
-            });
-        } else {
-            res.status(404).send({ error: 'Customer not found' });
+    CustomerService.createCustomer(req.body, (err, result) => {
+        if (err) {
+            return res.status(err.status || 500).json(err);
         }
+        res.status(200).json(result);
     });
 };
 
-module.exports = { createCustomer, getCustomerById };
+// Controller for verifying the OTP
+const verifyOtp = (req, res) => {
+    const { otp } = req.body;
+    CustomerService.verifyOtp(otp, (err, result) => {
+        if (err) {
+            return res.status(err.status || 500).json(err);
+        }
+        res.status(200).json(result);
+    });
+};
+
+// Controller for logging in a customer
+const loginCustomer = (req, res) => {
+    const { email, password } = req.body;
+    CustomerService.loginCustomer(email, password, (err, result) => {
+        if (err) {
+            return res.status(err.status || 500).json(err);
+        }
+        res.status(200).json(result);
+    });
+};
+
+module.exports = {
+    createCustomer,
+    verifyOtp,
+    loginCustomer // Export the new loginCustomer function
+};

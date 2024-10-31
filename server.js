@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const customerRoutes = require('./route/customerRoutes');
-const adminRoutes = require('./route/adminRoutes');
 
 const app = express();
 
@@ -12,9 +11,6 @@ app.use(cors());
 
 
 app.use('/api', customerRoutes);
-app.use('/api', adminRoutes);
-
-
 
 
 app.listen(5000, () => {

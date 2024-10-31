@@ -1,11 +1,16 @@
+// routes/customerRoutes.js
+
 const express = require('express');
-const { createCustomer, getCustomer, verifyOtp, updateCustomerStep } = require('../controllers/customerController');
-
 const router = express.Router();
+const CustomerController = require('../controllers/customerController');
 
-router.post('/customers', createCustomer); 
-router.patch('/customers/:customer_id', updateCustomerStep);
-router.get('/customers/:customer_id', getCustomer);
-router.post('/customers/verify-otp', verifyOtp);
+// Route for creating a customer
+router.post('/customers', CustomerController.createCustomer);
+
+// Route for verifying the OTP
+router.post('/customers/verify-otp', CustomerController.verifyOtp);
+
+// Route for logging in a customer
+router.post('/customers/login', CustomerController.loginCustomer); // Add the login route
 
 module.exports = router;
