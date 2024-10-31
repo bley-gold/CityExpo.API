@@ -1,156 +1,37 @@
 class Customer {
-
-  constructor(CustID_Nr, FirstName, LastName, PhoneNumber, Address, Email, LoginPin) {
-    this._CustID_Nr = CustID_Nr; // this is the id number and serves as the PK
-
-    this._FirstName = FirstName;
-    this._LastName = LastName;
-    this._PhoneNumber = PhoneNumber;
-    this._Address = Address;
-    this._Email = Email;
-    this._LoginPin = LoginPin;
-
+  constructor(customer_id, FirstName, LastName, PhoneNumber, Address, Email, Password) {
+      this._customer_id = customer_id;
+      this._FirstName = FirstName;
+      this._LastName = LastName;
+      this._PhoneNumber = PhoneNumber;
+      this._Address = Address;
+      this._Email = Email;
+      this._Password = Password;
   }
 
-//_____________________SETTERS_____________________________________
+  get customer_id() { return this._customer_id; }
+  set FirstName(value) { this.validateNonEmptyString(value, 'FirstName'); this._FirstName = value; }
+  set LastName(value) { this.validateNonEmptyString(value, 'LastName'); this._LastName = value; }
+  set PhoneNumber(value) { this.validatePhoneNumber(value); this._PhoneNumber = value; }
+  set Address(value) { this.validateNonEmptyString(value, 'Address'); this._Address = value; }
+  set Email(value) { this.validateEmail(value); this._Email = value; }
+  set Password(value) { this.validatePassword(value); this._Password = value; }
 
-  set CustID_Nr(value) {
-    // CustID_Nr should not be modified since it serves as the PK
-    throw new Error('CustID_Nr cannot be modified');
+  validateNonEmptyString(value, fieldName) {
+      if (typeof value !== 'string' || !value.trim()) throw new Error(`${fieldName} must be a non-empty string`);
   }
 
-  set FirstName(value) {
-    if (typeof value !== 'string' || value.trim() === '') {
-      throw new Error('FirstName must be a non-empty string');
-    }
-    this._FirstName = value;
+  validatePhoneNumber(value) {
+      if (!/^[0-9]{10}$/.test(value)) throw new Error('PhoneNumber must be a 10-digit number');
   }
 
-  set LastName(value) {
-    if (typeof value !== 'string' || value.trim() === '') {
-      throw new Error('LastName must be a non-empty string');
-    }
-    this._LastName = value;
+  validateEmail(value) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) throw new Error('Invalid email format');
   }
 
-  set PhoneNumber(value) {
-    const phoneRegex = /^[0-9]{10}$/; 
-    if (!phoneRegex.test(value)) {
-      throw new Error('PhoneNumber must be a 10-digit number');
-    }
-    this._PhoneNumber = value;
+  validatePassword(value) {
+      if (typeof value !== 'string' || value.length < 8) throw new Error('Password must be at least 8 characters');
   }
-
-  set Address(value) {
-    if (typeof value !== 'string' || value.trim() === '') {
-      throw new Error('Address must be a non-empty string');
-    }
-    this._Address = value;
-  }
-
-  set Email(value) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(value)) {
-      throw new Error('Invalid email format');
-    }
-    this._Email = value;
-  }
-
-  set DateOfBirth(value) {
-    if (!(value instanceof Date) || isNaN(value.getTime())) {
-      throw new Error('DateOfBirth must be a valid date');
-    }
-    this._DateOfBirth = value;
-  }
-
-  set LoginPin(value) {
-    if (typeof value !== 'string' || value.length < 4) {
-      throw new Error('LoginPin must be a string with at least 4 characters');
-    }
-    this._LoginPin = value;
-  }
-
-  //What length is the AlertPin?
-  set AlertPin(value) {
-    if (typeof value !== 'string' || value.length < 4) {
-      throw new Error('AlertPin must be a string with at least 4 characters');
-    }
-    this._AlertPin = value;
-  }
-
-  set isActive(value) {
-    if (typeof value !== 'boolean') {
-      throw new Error('isActive must be a boolean');
-    }
-    this._isActive = value;
-  }
-
-  set PanicButtonStatus(value) {
-    if (typeof value !== 'boolean') {
-      throw new Error('PanicButtonStatus must be a boolean');
-    }
-    this._PanicButtonStatus = value;
-  }
-
-  set AccountID(value){
-    if(typeof value !== 'string' || value.length < 10 || value.length > 10){
-      throw new Error('Account must be a 10 digits');
-    }
-    this._AccountID = value
-  }
-
- 
-
-  //_______________________________GETTERS_________________________________
-
-  get CustID_Nr() {
-    return this._CustID_Nr;
-  }
-
-  get FirstName() {
-    return this._FirstName;
-  }
-
-  get LastName() {
-    return this._LastName;
-  }
-
-  get PhoneNumber() {
-    return this._PhoneNumber;
-  }
-
-  get Address() {
-    return this._Address;
-  }
-
-  get Email() {
-    return this._Email;
-  }
-
-  get DateOfBirth() {
-    return this._DateOfBirth;
-  }
-
-  get LoginPin() {
-    return this._LoginPin;
-  }
-
-  get AlertPin() {
-    return this._AlertPin;
-  }
-
-  get isActive() {
-    return this._isActive;
-  }
-
-  get PanicButtonStatus() {
-    return this._PanicButtonStatus;
-  }
-
-  get AccountID(){
-    return this._AccountID;
-  }
-
 }
 
 module.exports = Customer;
